@@ -1,0 +1,47 @@
+service-id: optimize-keycloak-connector
+spring:
+  application:
+    name: optimize-keycloak-connector
+    service-id: optimize-keycloak-connector
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: login-app
+            authorization-grant-type: authorization_code
+            scope: openid
+          '${service-id}':
+            authorization-grant-type: client_credentials
+            client-id: ${service-id}
+            client-secret: ${keycloak.credentials.secret} #Hwj5XrDGcS648VKTFU9NUeTdFXsL69jR
+            scope: openid
+            provider: ${service-id}
+        provider:
+          keycloak:
+            issuer-uri: ${keycloak.auth-server-url}
+            user-name-attribute: preferred_username
+#          '${service-id}':
+#            authorization-uri: ${keycloak.realm-url}/protocol/openid-connect/authorize
+#            token-uri: ${keycloak.realm}/protocol/openid-connect/token
+      resourceserver:
+        jwt:
+          issuer-uri: ${keycloak.base-url}/${keycloak.realm}
+
+keycloak:
+  base-url: ${keycloak.auth-server-url}/realms
+  realm: cfs
+  auth-server-url: http://localhost:8080
+  realm-url: ${keycloak.base-url}/${keycloak.realm}
+  authorize-api:
+    list: ""
+  credentials:
+    secret: zUjLnf16ucuxW803B7BpLZ8f4AOJhWfO
+  client-id: ""
+  server-url: http://localhost:8080
+  username: admin
+  password: 123456
+  scope: openid
+  grant-type: "client_credentials"
+  ssl-required: external
+#  use-resource-role-mappings: true
